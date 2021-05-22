@@ -10,7 +10,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     return (
         <ApolloProvider client={client}>
             <Component {...pageProps} />

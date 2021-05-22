@@ -25,8 +25,7 @@ module.exports = {
         'plugin:jsx-a11y/recommended',
         'plugin:prettier/recommended', // Make this the last element so prettier config overrides other formatting rules
         'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint'
+        'plugin:@typescript-eslint/recommended'
     ],
     rules: {
         'prettier/prettier': ['error', {}, { usePrettierrc: true }], // Use our .prettierrc file as source

@@ -1,7 +1,7 @@
 import React from 'react';
 import AppContainer from '../components/AppContainer';
 
-export default function notfound() {
+export default function notfound(): JSX.Element {
     return (
         <AppContainer>
             <div className="flex h-screen">

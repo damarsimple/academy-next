@@ -1,9 +1,9 @@
 import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/Link';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { BiMenu } from 'react-icons/bi';
 import { FiDelete, FiEdit } from 'react-icons/fi';
-import { BaseModel, GQLCursorVar, KeyOf, KeysOf } from '../types/type';
+import { BaseModel, GQLCursorVar, KeyOf } from '../types/type';
 
 import { useQuery, DocumentNode } from '@apollo/client';
 
@@ -33,7 +33,7 @@ export interface SortData<T> {
 
 export default function Table<T extends BaseModel, C extends GQLCursorVar>(
     props: TableProps<T, C>
-) {
+): JSX.Element {
     const { headers, gqlGetQuery, gqlVar, gqlMassDeleteQuery } = props;
 
     const { loading, error, data } = useQuery<T[], GQLCursorVar>(gqlGetQuery, {
@@ -41,7 +41,8 @@ export default function Table<T extends BaseModel, C extends GQLCursorVar>(
     });
 
     const handleSort = (e: KeyOf<T>, order?: 'asc' | 'desc') => {
-        let i = 0;
+        console.log(e, order, gqlMassDeleteQuery);
+        return;
     };
 
     return (
@@ -49,9 +50,9 @@ export default function Table<T extends BaseModel, C extends GQLCursorVar>(
             <thead>
                 <tr>
                     {headers.map((header) => (
-                        <th className="bg-gray-50 hover:bg-gray-100">
+                        <th key={header.name as string} className="bg-gray-50 hover:bg-gray-100">
                             <Popover className="relative">
-                                {({ open }) => (
+                                {() => (
                                     <>
                                         <Popover.Button className="flex justify-between w-full p-4">
                                             <span>{header.formatted}</span>

@@ -13,7 +13,7 @@ import { Disclosure } from '@headlessui/react';
 type Children = JSX.Element | JSX.Element[];
 
 interface ContainerProp {
-    children: Children;
+    children?: Children;
 }
 
 interface SubMenu {
@@ -255,7 +255,7 @@ const AppMenu: Menu[] = [
     }
 ];
 
-export default function AppContainer(props: ContainerProp) {
+export default function AppContainer(props: ContainerProp): JSX.Element {
     const { children } = props;
     return (
         <div>

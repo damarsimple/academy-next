@@ -1,32 +1,12 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import { Column } from 'react-table';
 import AppContainer from '../../components/AppContainer';
 import Table from '../../components/Table';
 import { GQLCursorVar, Lecturer } from '../../types/type';
 
-interface LecturerVar extends GQLCursorVar {}
+type LecturerVar = GQLCursorVar;
 
-export default function index() {
-    const data: Lecturer[] = Array(100)
-        .fill({
-            id: 1,
-            name: 'Joko Hermawan',
-            nidn: 1,
-            doctorate: 'S3 Komputer',
-            magistrate: 'S2 AI',
-            specialty: 'Menggambar',
-            is_conform_with_ps: true,
-            academic_job: 'any',
-            certificate_education:
-                'SAP University Alliance, Jakarta SAP Fundamental Training (Training for Trainers)',
-            certificate_industry:
-                'SAP University Alliance, Jakarta SAP Fundamental Training (Training for Trainers)'
-        })
-        .map((e, i) => {
-            return { ...e, id: i };
-        });
-
+export default function index(): JSX.Element {
     return (
         <AppContainer>
             <Table<Lecturer, LecturerVar>
