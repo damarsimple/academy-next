@@ -1,5 +1,5 @@
 import { Popover, Transition } from '@headlessui/react';
-import Link from 'next/Link';
+import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { BiMenu } from 'react-icons/bi';
 import { FiDelete, FiEdit } from 'react-icons/fi';

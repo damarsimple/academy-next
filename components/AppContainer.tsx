@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Link from 'next/Link';
+import Link from 'next/link';
 import Image from 'next/image';
 import { FiActivity, FiBook, FiChevronDown, FiUserPlus, FiUsers } from 'react-icons/fi';
 import { AiFillClockCircle, AiOutlinePlus } from 'react-icons/ai';
