@@ -4,10 +4,21 @@ import 'tailwindcss/tailwind.css';
 
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
+import { relayStylePagination } from '@apollo/client/utilities';
+
+const cache = new InMemoryCache({
+    typePolicies: {
+        Query: {
+            fields: {
+                lecturers: relayStylePagination()
+            }
+        }
+    }
+});
 
 const client = new ApolloClient({
-    uri: 'https://48p1r2roz4.sse.codesandbox.io',
-    cache: new InMemoryCache()
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
+    cache
 });
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
