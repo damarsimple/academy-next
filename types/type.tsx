@@ -1,5 +1,18 @@
+import { NextRouter } from 'next/dist/client/router';
+
 export interface BaseModel {
     id: string;
+}
+export interface WithRouterProps {
+    router: NextRouter;
+}
+export interface FormAttribute {
+    formatted_name: string;
+    name: string;
+    required?: boolean;
+    type?: string;
+    defaultValue?: any;
+    disabled?: boolean;
 }
 
 export type KeyOf<T> = keyof T;
@@ -157,7 +170,7 @@ export type Lecturer = {
     magister_degree?: Maybe<Scalars['String']>;
     academic_job?: Maybe<Scalars['String']>;
     specialty?: Maybe<Scalars['String']>;
-    education_certificate_Int?: Maybe<Scalars['String']>;
+    education_certificate_number?: Maybe<Scalars['String']>;
     is_ps_competent?: Maybe<Scalars['Boolean']>;
 };
 
@@ -176,7 +189,7 @@ export type CreateLecturerInput = {
     doctor_degree?: Maybe<Scalars['String']>;
     magister_degree?: Maybe<Scalars['String']>;
     specialty?: Maybe<Scalars['String']>;
-    education_certificate_Int?: Maybe<Scalars['String']>;
+    education_certificate_number?: Maybe<Scalars['String']>;
     is_ps_competent?: Maybe<Scalars['Boolean']>;
 };
 

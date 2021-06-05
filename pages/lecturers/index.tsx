@@ -13,7 +13,10 @@ export default function index(): JSX.Element {
                 fields="lecturers"
                 gqlVar={{ cursor: '' }}
                 gqlGetQuery={gql`
-                    query GetLecturerData($after: String, $where: QueryLecturersWhereWhereConditions) {
+                    query GetLecturerData(
+                        $after: String
+                        $where: QueryLecturersWhereWhereConditions
+                    ) {
                         lecturers(first: 20, after: $after, where: $where) {
                             edges {
                                 node {
@@ -24,7 +27,7 @@ export default function index(): JSX.Element {
                                     doctor_degree
                                     specialty
                                     is_ps_competent
-                                    education_certificate_Int
+                                    education_certificate_number
                                 }
                                 cursor
                             }
@@ -37,12 +40,9 @@ export default function index(): JSX.Element {
                     }
                 `}
                 gqlMassDeleteQuery={gql`
-                    query GetLecturerData($year: Int!) {
-                        rocketInventory(year: $year) {
+                    mutation ($id: [ID!]!) {
+                        deleteLecturers(id: $id) {
                             id
-                            model
-                            year
-                            stock
                         }
                     }
                 `}

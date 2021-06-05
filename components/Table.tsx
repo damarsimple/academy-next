@@ -14,7 +14,7 @@ import {
     WhereConditions
 } from '../types/type';
 
-import { useQuery, DocumentNode } from '@apollo/client';
+import { useQuery, DocumentNode, useMutation } from '@apollo/client';
 interface MapKeys<T> {
     name: T;
     formatted: string;
@@ -82,18 +82,6 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
     // }, [WhereCondition]);
 
     const getMoreData = () => {
-        // refetch({
-        //     where: {
-        //         AND: [
-        //             {
-        //                 column: QueryLecturersWhereColumn.Name,
-        //                 operator: SqlOperator.Like,
-        //                 value: 'dmr'
-        //             }
-        //         ]
-        //     }
-        // });
-
         if (data && pageInfo?.hasNextPage) {
             fetchMore({
                 variables: {
@@ -106,6 +94,14 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
     const handleSort = (e: KeyOf<T>, order?: 'asc' | 'desc') => {
         console.log(e, order, gqlMassDeleteQuery);
         return;
+    };
+
+    const [massDelete] = useMutation(gqlMassDeleteQuery);
+
+    const handleMassDelete = (ids: Array<any>) => {
+        massDelete({ variables: { id: ids } }).then((e) => {
+            refetch();
+        });
     };
 
     return (
@@ -217,7 +213,9 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
                                             <FiEdit size="1.5em" />
                                         </button>
                                     </Link>
-                                    <button className="flex justify-center p-2 text-white w-full bg-red-500 hover:bg-red-600">
+                                    <button
+                                        onClick={() => handleMassDelete([cell?.id])}
+                                        className="flex justify-center p-2 text-white w-full bg-red-500 hover:bg-red-600">
                                         <FiDelete size="1.5em" />
                                     </button>
                                 </td>
