@@ -2,7 +2,6 @@ import React from 'react';
 import AppContainer from '../../components/AppContainer';
 import Form, { StringMap } from '../../components/Form';
 import { gql, useMutation } from '@apollo/client';
-import { Lecturer } from '../../types/type';
 import withRouter, { WithRouterProps } from 'next/dist/client/with-router';
 import { BASE_FORMATTED_LECTURER_ATTRIBUTE } from '../../types/base';
 

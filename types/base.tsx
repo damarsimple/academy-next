@@ -57,7 +57,7 @@ export const BASE_FORMATTED_LECTURER_ATTRIBUTE = [
     }
 ];
 
-export const reduceToObject = (array: Array<FormAttribute>, by: KeyOf<FormAttribute>) =>
+export const reduceToObject = (array: Array<FormAttribute>, by: KeyOf<FormAttribute>): StringMap =>
     array.reduce((obj: StringMap, item) => {
         obj[item.name] = item[by];
         return obj;

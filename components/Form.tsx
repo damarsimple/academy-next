@@ -1,7 +1,7 @@
 import { FiPlus } from 'react-icons/fi';
 
 export interface StringMap {
-    [key: string]: any;
+    [key: string]: number | boolean | string | undefined;
 }
 
 import React from 'react';
@@ -10,7 +10,7 @@ import { FormAttribute } from '../types/type';
 export default function Form(props: {
     attributes: Array<FormAttribute>;
     handleChange: (by: StringMap) => void;
-}) {
+}): JSX.Element {
     const data: StringMap = {};
     return (
         <form
@@ -30,7 +30,7 @@ export default function Form(props: {
                         handleChange={(x) => (data[e.name] = x)}
                         required={!!e.required}
                         type={e.type ?? 'text'}
-                        defaultValue={e.defaultValue}
+                        defaultValue={e.defaultValue ?? ''}
                         disabled={!!e.disabled}
                     />
                 </div>
@@ -44,19 +44,19 @@ export default function Form(props: {
 }
 
 const InputBox = (props: {
-    handleChange: (e: any) => void;
+    handleChange: (e: string | number | boolean) => void;
     required?: boolean;
     type?: string;
-    defaultValue?: any;
+    defaultValue?: string | number | boolean;
     disabled?: boolean;
-}) => {
+}): JSX.Element => {
     switch (props.type) {
         case 'checkbox':
             return (
                 <input
                     type="checkbox"
                     required={!!props.required}
-                    defaultChecked={props.defaultValue}
+                    defaultChecked={props.defaultValue as boolean}
                     onChange={(evt) => {
                         props.handleChange(evt.target.checked);
                     }}
@@ -70,7 +70,7 @@ const InputBox = (props: {
                     type="text"
                     className="border-2 rounded p-4"
                     required={!!props.required}
-                    defaultValue={props.defaultValue}
+                    defaultValue={props.defaultValue as string}
                     onChange={(evt) => {
                         props.handleChange(evt.target.value);
                     }}

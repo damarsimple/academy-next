@@ -1,18 +1,9 @@
 import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/link';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { BiMenu } from 'react-icons/bi';
 import { FiDelete, FiEdit, FiPlus } from 'react-icons/fi';
-import {
-    BaseModel,
-    Edge,
-    GQLVar,
-    KeyOf,
-    PageInfo,
-    QueryLecturersWhereColumn,
-    SqlOperator,
-    WhereConditions
-} from '../types/type';
+import { BaseModel, Edge, GQLVar, KeyOf, PageInfo } from '../types/type';
 
 import { useQuery, DocumentNode, useMutation } from '@apollo/client';
 interface MapKeys<T> {
@@ -66,8 +57,6 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
     const nodes = data && data[fields]?.edges.map((edge) => edge.node);
     const pageInfo = data && data[fields]?.pageInfo;
 
-    const [WhereCondition, setWhereCondition] = useState<WhereConditions>({});
-
     // useEffect(() => {
     //     let cp: WhereConditions = {
     //         AND: [
@@ -98,8 +87,8 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
 
     const [massDelete] = useMutation(gqlMassDeleteQuery);
 
-    const handleMassDelete = (ids: Array<any>) => {
-        massDelete({ variables: { id: ids } }).then((e) => {
+    const handleMassDelete = (ids: Array<string | number>) => {
+        massDelete({ variables: { id: ids } }).then(() => {
             refetch();
         });
     };
@@ -214,7 +203,9 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
                                         </button>
                                     </Link>
                                     <button
-                                        onClick={() => handleMassDelete([cell?.id])}
+                                        onClick={() =>
+                                            handleMassDelete([cell?.id as unknown as number])
+                                        }
                                         className="flex justify-center p-2 text-white w-full bg-red-500 hover:bg-red-600">
                                         <FiDelete size="1.5em" />
                                     </button>

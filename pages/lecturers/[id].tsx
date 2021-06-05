@@ -63,7 +63,7 @@ function id({ router }: WithRouterProps): JSX.Element {
     const handleSubmit = (e: StringMap) => {
         createLecturer({
             variables: { ...e, id }
-        }).then((e) => {
+        }).then(() => {
             router.push('/lecturers/');
         });
     };
@@ -81,10 +81,10 @@ function id({ router }: WithRouterProps): JSX.Element {
                             ...BASE_FORMATTED_LECTURER_ATTRIBUTE.map((e) => {
                                 return {
                                     ...e,
-                                    type: lecturerTypeMap[e.name],
-                                    name: lecturerNameMap[e.name],
-                                    required: lecturerRequiredMap[e.name],
-                                    defaultValue: data?.lecturer[e.name]
+                                    type: lecturerTypeMap[e.name] as string,
+                                    name: lecturerNameMap[e.name] as string,
+                                    required: (lecturerRequiredMap[e.name] as boolean) ?? false,
+                                    defaultValue: data?.lecturer[e.name] as string
                                 };
                             }),
                             ...BASE_MODEL_ATTRIBUTE.map((e) => {

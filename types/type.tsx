@@ -10,9 +10,9 @@ export interface FormAttribute {
     formatted_name: string;
     name: string;
     required?: boolean;
-    type?: string;
-    defaultValue?: any;
-    disabled?: boolean;
+    type?: string | undefined;
+    defaultValue?: string | number | boolean | undefined;
+    disabled?: boolean | undefined;
 }
 
 export type KeyOf<T> = keyof T;
@@ -40,9 +40,9 @@ export type Scalars = {
     Boolean: boolean;
     Int: number;
     Float: number;
-    DateTime: any;
-    Mixed: any;
-    Date: any;
+    DateTime: string;
+    Mixed: string;
+    Date: string;
 };
 
 export type Query = {
