@@ -2,32 +2,26 @@ import { gql } from '@apollo/client';
 import React from 'react';
 import AppContainer from '../../components/AppContainer';
 import Table from '../../components/Table';
-import { GQLVar, Lecturer } from '../../types/type';
+import { GQLVar, Course } from '../../types/type';
 
 type LecturerVar = GQLVar;
 
 export default function index(): JSX.Element {
     return (
         <AppContainer>
-            <Table<Lecturer, LecturerVar>
-                fields="lecturers"
+            <Table<Course, LecturerVar>
+                fields="courses"
                 gqlVar={{ cursor: '' }}
                 gqlGetQuery={gql`
-                    query GetLecturerData(
-                        $after: String
-                        $where: QueryLecturersWhereWhereConditions
-                    ) {
-                        lecturers(first: 20, after: $after, where: $where) {
+                    query ($after: String) {
+                        courses(first: 20, after: $after) {
                             edges {
                                 node {
-                                    name
                                     id
-                                    nidn
-                                    academic_job
-                                    doctor_degree
-                                    specialty
-                                    is_ps_competent
-                                    education_certificate_number
+                                    name
+                                    competency
+                                    code
+                                    organizing_unit
                                 }
                                 cursor
                             }
@@ -53,24 +47,19 @@ export default function index(): JSX.Element {
                     },
                     {
                         name: 'name',
-                        formatted: 'Nama Dosen'
+                        formatted: 'Nama'
                     },
                     {
-                        name: 'nidn',
-                        formatted: 'NIDN / NIDK'
+                        name: 'competency',
+                        formatted: 'Kompetensi'
                     },
                     {
-                        name: 'magister_degree',
-                        formatted: 'S2'
+                        name: 'code',
+                        formatted: 'Kode'
                     },
                     {
-                        name: 'doctor_degree',
-                        formatted: 'S3'
-                    },
-
-                    {
-                        name: 'specialty',
-                        formatted: 'Keahlian Khusus'
+                        name: 'organizing_unit',
+                        formatted: 'Unit yang mengorganisir'
                     }
                 ]}
             />

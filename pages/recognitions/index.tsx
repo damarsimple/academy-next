@@ -2,32 +2,32 @@ import { gql } from '@apollo/client';
 import React from 'react';
 import AppContainer from '../../components/AppContainer';
 import Table from '../../components/Table';
-import { GQLVar, Lecturer } from '../../types/type';
+import { GQLVar, Recognition } from '../../types/type';
 
 type LecturerVar = GQLVar;
 
 export default function index(): JSX.Element {
     return (
         <AppContainer>
-            <Table<Lecturer, LecturerVar>
-                fields="lecturers"
+            <Table<Recognition, LecturerVar>
+                fields="recognitions"
                 gqlVar={{ cursor: '' }}
                 gqlGetQuery={gql`
-                    query GetLecturerData(
-                        $after: String
-                        $where: QueryLecturersWhereWhereConditions
-                    ) {
-                        lecturers(first: 20, after: $after, where: $where) {
+                    query ($after: String) {
+                        recognitions(first: 20, after: $after) {
                             edges {
                                 node {
-                                    name
                                     id
-                                    nidn
-                                    academic_job
-                                    doctor_degree
+                                    proof
                                     specialty
-                                    is_ps_competent
-                                    education_certificate_number
+                                    is_international
+                                    is_national
+                                    is_local
+                                    start_at
+                                    finish_at
+                                    lecturer {
+                                        name
+                                    }
                                 }
                                 cursor
                             }
@@ -52,20 +52,32 @@ export default function index(): JSX.Element {
                         formatted: 'ID'
                     },
                     {
-                        name: 'name',
+                        name: ['lecturer', 'name'],
                         formatted: 'Nama Dosen'
                     },
                     {
-                        name: 'nidn',
-                        formatted: 'NIDN / NIDK'
+                        name: 'is_local',
+                        formatted: 'Lokal'
                     },
                     {
-                        name: 'magister_degree',
-                        formatted: 'S2'
+                        name: 'is_national',
+                        formatted: 'Nasional'
                     },
                     {
-                        name: 'doctor_degree',
-                        formatted: 'S3'
+                        name: 'is_international',
+                        formatted: 'Internasional'
+                    },
+                    {
+                        name: 'start_at',
+                        formatted: 'Dimulai Pada'
+                    },
+                    {
+                        name: 'finish_at',
+                        formatted: 'Selesai Pada'
+                    },
+                    {
+                        name: 'proof',
+                        formatted: 'Bukti'
                     },
 
                     {

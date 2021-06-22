@@ -147,12 +147,12 @@ const AppMenu: Menu[] = [
         menus: [
             {
                 name: 'Data',
-                url: '/achievements',
+                url: '/recognitions',
                 icon: <RiStarSFill size="1.5em" />
             },
             {
                 name: 'Buat',
-                url: '/achievements/create',
+                url: '/recognitions/create',
                 icon: <AiOutlinePlus size="1.5em" />
             }
         ]
@@ -189,50 +189,50 @@ const AppMenu: Menu[] = [
             }
         ]
     },
-    {
-        name: 'IPK',
-        icon: <MdGrade size="1.5em" />,
-        menus: [
-            {
-                name: 'Data',
-                url: '/ipks',
-                icon: <MdGrade size="1.5em" />
-            },
-            {
-                name: 'Buat',
-                url: '/ipks/create',
-                icon: <AiOutlinePlus size="1.5em" />
-            }
-        ]
-    },
-    {
-        name: 'Mahasiswa Asing',
-        icon: <BiPlanet size="1.5em" />,
-        menus: [
-            {
-                name: 'Data',
-                url: '/foreigns',
-                icon: <BiPlanet size="1.5em" />
-            },
-            {
-                name: 'Buat',
-                url: '/foreigns/create',
-                icon: <AiOutlinePlus size="1.5em" />
-            }
-        ]
-    },
+    // {
+    //     name: 'IPK',
+    //     icon: <MdGrade size="1.5em" />,
+    //     menus: [
+    //         {
+    //             name: 'Data',
+    //             url: '/ipks',
+    //             icon: <MdGrade size="1.5em" />
+    //         },
+    //         {
+    //             name: 'Buat',
+    //             url: '/ipks/create',
+    //             icon: <AiOutlinePlus size="1.5em" />
+    //         }
+    //     ]
+    // },
+    // {
+    //     name: 'Mahasiswa Asing',
+    //     icon: <BiPlanet size="1.5em" />,
+    //     menus: [
+    //         {
+    //             name: 'Data',
+    //             url: '/foreigns',
+    //             icon: <BiPlanet size="1.5em" />
+    //         },
+    //         {
+    //             name: 'Buat',
+    //             url: '/foreigns/create',
+    //             icon: <AiOutlinePlus size="1.5em" />
+    //         }
+    //     ]
+    // },
     {
         name: 'Prestasi Akademik Mahasiswa',
         icon: <RiStarSFill size="1.5em" />,
         menus: [
             {
                 name: 'Data',
-                url: '/achievement',
+                url: '/achievements',
                 icon: <RiStarSFill size="1.5em" />
             },
             {
                 name: 'Buat',
-                url: '/achievement/create',
+                url: '/achievements/create',
                 icon: <AiOutlinePlus size="1.5em" />
             }
         ]

@@ -10,7 +10,27 @@ const cache = new InMemoryCache({
     typePolicies: {
         Query: {
             fields: {
-                lecturers: relayStylePagination()
+                // mass assign fields to relaystyle pagination
+                // register relaystyle pagination here
+                ...[
+                    'lecturers',
+                    'studyprograms',
+                    'achievements',
+                    'articles',
+                    'cooperations',
+                    'courses',
+                    'course_research_integrations',
+                    'graduations',
+                    'pkms',
+                    'recognitions',
+                    'researches',
+                    'semesters',
+                    'students',
+                    'student_courses',
+                    'studyprograms',
+                    'surveys',
+                    'lecturers'
+                ].reduce((o, key) => ({ ...o, [key]: relayStylePagination() }), {})
             }
         }
     }

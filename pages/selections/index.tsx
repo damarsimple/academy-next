@@ -2,32 +2,29 @@ import { gql } from '@apollo/client';
 import React from 'react';
 import AppContainer from '../../components/AppContainer';
 import Table from '../../components/Table';
-import { GQLVar, Lecturer } from '../../types/type';
+import { GQLVar, StudentSelection } from '../../types/type';
 
 type LecturerVar = GQLVar;
 
 export default function index(): JSX.Element {
     return (
         <AppContainer>
-            <Table<Lecturer, LecturerVar>
-                fields="lecturers"
+            <Table<StudentSelection, LecturerVar>
+                fields="student_selections"
                 gqlVar={{ cursor: '' }}
                 gqlGetQuery={gql`
-                    query GetLecturerData(
-                        $after: String
-                        $where: QueryLecturersWhereWhereConditions
-                    ) {
-                        lecturers(first: 20, after: $after, where: $where) {
+                    query ($after: String) {
+                        student_selections(first: 20, after: $after) {
                             edges {
                                 node {
-                                    name
                                     id
-                                    nidn
-                                    academic_job
-                                    doctor_degree
-                                    specialty
-                                    is_ps_competent
-                                    education_certificate_number
+                                    year
+                                    student {
+                                        name
+                                    }
+                                    is_accepted
+                                    is_regular
+                                    is_transfer
                                 }
                                 cursor
                             }
@@ -52,25 +49,25 @@ export default function index(): JSX.Element {
                         formatted: 'ID'
                     },
                     {
-                        name: 'name',
-                        formatted: 'Nama Dosen'
+                        name: ['student', 'name'],
+                        formatted: 'Nama Mahasiswa'
                     },
                     {
-                        name: 'nidn',
-                        formatted: 'NIDN / NIDK'
+                        name: 'year',
+                        formatted: 'Tahun'
                     },
                     {
-                        name: 'magister_degree',
-                        formatted: 'S2'
+                        formatted: 'Diterima',
+                        name: 'is_accepted'
                     },
                     {
-                        name: 'doctor_degree',
-                        formatted: 'S3'
+                        formatted: 'Regular',
+                        name: 'is_regular'
                     },
 
                     {
-                        name: 'specialty',
-                        formatted: 'Keahlian Khusus'
+                        formatted: 'Transfer',
+                        name: 'is_transfer'
                     }
                 ]}
             />

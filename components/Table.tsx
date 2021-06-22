@@ -1,22 +1,71 @@
 import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/link';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { BiMenu } from 'react-icons/bi';
 import { FiDelete, FiEdit, FiPlus } from 'react-icons/fi';
 import { BaseModel, Edge, GQLVar, KeyOf, PageInfo } from '../types/type';
-
 import { useQuery, DocumentNode, useMutation } from '@apollo/client';
+import { get } from 'lodash';
+import { AiOutlineLoading, AiFillWarning } from 'react-icons/ai';
+
+// https://stackoverflow.com/questions/58434389/typescript-deep-keyof-of-a-nested-object
+
+type Cons<H, T> = T extends readonly unknown[]
+    ? ((h: H, ...t: T) => void) extends (...r: infer R) => void
+        ? R
+        : never
+    : never;
+
+type Prev = [
+    never,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    ...0[]
+];
+
+type Leaves<T, D extends number = 10> = [D] extends [never]
+    ? never
+    : // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends object
+    ? { [K in keyof T]-?: Cons<K, Leaves<T[K], Prev[D]>> }[keyof T]
+    : [];
+
 interface MapKeys<T> {
     name: T;
     formatted: string;
+    formatter?: (t: unknown) => string;
 }
 
 interface TableProps<T extends BaseModel, C extends GQLVar> {
-    headers: MapKeys<KeyOf<T>>[];
+    headers: MapKeys<KeyOf<T> | Leaves<T, 3>>[];
     gqlGetQuery: DocumentNode;
     gqlMassDeleteQuery: DocumentNode;
     gqlVar: C;
     fields: string;
+    url?: string;
+    options?: {
+        create?: boolean;
+    };
+    route?: string;
 }
 
 /**
@@ -48,7 +97,7 @@ export interface Data<T> {
 export default function Table<T extends BaseModel, C extends GQLVar>(
     props: TableProps<T, C>
 ): JSX.Element {
-    const { fields, headers, gqlGetQuery, gqlVar, gqlMassDeleteQuery } = props;
+    const { url, fields, headers, gqlGetQuery, gqlVar, gqlMassDeleteQuery } = props;
 
     const { loading, error, data, fetchMore, refetch } = useQuery<Data<T>, GQLVar>(gqlGetQuery, {
         variables: gqlVar
@@ -56,7 +105,7 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
 
     const nodes = data && data[fields]?.edges.map((edge) => edge.node);
     const pageInfo = data && data[fields]?.pageInfo;
-
+    const route = props.route ?? 'admins';
     // useEffect(() => {
     //     let cp: WhereConditions = {
     //         AND: [
@@ -70,18 +119,25 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
 
     // }, [WhereCondition]);
 
+    useEffect(() => {
+        refetch(gqlVar);
+    }, [gqlVar]);
+
     const getMoreData = () => {
         if (data && pageInfo?.hasNextPage) {
             fetchMore({
                 variables: {
+                    ...gqlVar,
                     after: data[fields].pageInfo.endCursor
                 }
             });
+
+            console.log(data);
         }
     };
 
-    const handleSort = (e: KeyOf<T>, order?: 'asc' | 'desc') => {
-        console.log(e, order, gqlMassDeleteQuery);
+    const handleSort = (e: KeyOf<T> | Leaves<T, 3>, order?: 'asc' | 'desc') => {
+        console.log(Array.isArray(e) ? e.join('.') : e, order, gqlMassDeleteQuery);
         return;
     };
 
@@ -93,17 +149,23 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
         });
     };
 
+    const OPTION = props.options ?? {
+        create: true
+    };
+
     return (
         <div>
             <div className="flex justify-between mb-6">
                 <div className="flex gap-4">
-                    <div>
-                        <Link href={`/${fields}/create`}>
-                            <button className="rounded shadow focus-within:flex p-2 text-white w-full bg-green-500 hover:bg-green-600">
-                                <FiPlus size="1.5em" /> Buat
-                            </button>
-                        </Link>
-                    </div>
+                    {OPTION?.create && (
+                        <div>
+                            <Link href={`/${route}/${url ?? fields}/create`}>
+                                <button className="rounded shadow focus-within:flex p-2 text-white w-full bg-green-500 hover:bg-green-600">
+                                    <FiPlus size="1.5em" /> Buat
+                                </button>
+                            </Link>
+                        </div>
+                    )}
                     <div>
                         <select className="w-56 p-4 shadow rounded">
                             <option value={SORT.OLDEST}>Terlama</option>
@@ -127,13 +189,14 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
                                 key={header.name as string}
                                 className="bg-gray-50 hover:bg-gray-100">
                                 <Popover className="relative">
-                                    {() => (
+                                    {({ open }) => (
                                         <>
                                             <Popover.Button className="flex justify-between w-full p-4">
                                                 <span>{header.formatted}</span>
                                                 <BiMenu size="1.5em" />
                                             </Popover.Button>
                                             <Transition
+                                                show={open}
                                                 as={Fragment}
                                                 enter="transition ease-out duration-200"
                                                 enterFrom="opacity-0 translate-y-1"
@@ -173,12 +236,16 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
                 <tbody>
                     {loading && (
                         <tr className="w-full text-center italic px-2">
-                            <td>Loading</td>
+                            <td colSpan={headers?.length ?? 1} className="flex justify-center">
+                                <AiOutlineLoading className="animate-spin" size="2em" />
+                            </td>
                         </tr>
                     )}
                     {error && (
                         <tr className="w-full text-center italic px-2">
-                            <td>Error ... {error.message}</td>
+                            <td colSpan={headers?.length ?? 1} className="flex justify-center">
+                                <AiFillWarning size="2em" /> Error ... {error.message}
+                            </td>
                         </tr>
                     )}
                     {nodes &&
@@ -186,10 +253,26 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
                             <tr className="hover:bg-gray-50 p-2" key={`${cell?.id}`}>
                                 {headers.map((e) => (
                                     <td key={`${cell?.id}-${e.name}-${e.formatted}`}>
-                                        <Link href={`/${fields}/` + cell?.id}>
+                                        <Link href={`/${route}/${fields}/` + cell?.id}>
                                             <a>
                                                 <button className="w-full p-4">
-                                                    {(cell && cell[e.name]) ?? 'Kosong'}
+                                                    {cell && e.formatter
+                                                        ? e.formatter(
+                                                              get(
+                                                                  cell,
+                                                                  Array.isArray(e.name)
+                                                                      ? e.name.join('.')
+                                                                      : e.name,
+                                                                  'Kosong'
+                                                              )
+                                                          )
+                                                        : get(
+                                                              cell,
+                                                              Array.isArray(e.name)
+                                                                  ? e.name.join('.')
+                                                                  : e.name,
+                                                              'Kosong'
+                                                          )?.toString()}
                                                 </button>
                                             </a>
                                         </Link>
@@ -218,7 +301,7 @@ export default function Table<T extends BaseModel, C extends GQLVar>(
                 <button
                     className="p-4 w-full bg-green-500 hover:bg-green-600 text-white"
                     onClick={getMoreData}>
-                    Load More..
+                    Muat Lebih Banyak...
                 </button>
             ) : (
                 <div>Data sudah habis...</div>
