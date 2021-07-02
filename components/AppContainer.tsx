@@ -6,8 +6,6 @@ import { FiActivity, FiBook, FiChevronDown, FiUserPlus, FiUsers } from 'react-ic
 import { AiFillClockCircle, AiOutlinePlus } from 'react-icons/ai';
 import { FaUsers, FaVoteYea } from 'react-icons/fa';
 import { GiShakingHands } from 'react-icons/gi';
-import { BiPlanet } from 'react-icons/bi';
-import { MdGrade } from 'react-icons/md';
 import { RiArticleLine, RiStarSFill, RiSurveyLine } from 'react-icons/ri';
 import { Disclosure } from '@headlessui/react';
 type Children = JSX.Element | JSX.Element[];
