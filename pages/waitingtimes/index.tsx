@@ -2,34 +2,35 @@ import { gql } from '@apollo/client';
 import React from 'react';
 import AppContainer from '../../components/AppContainer';
 import Table from '../../components/Table';
-import { GQLVar, Lecturer } from '../../types/type';
+import { GQLVar, Student } from '../../types/type';
+import moment from 'moment';
 
 type LecturerVar = GQLVar;
 
 export default function index(): JSX.Element {
     return (
         <AppContainer>
-            <Table<Lecturer, LecturerVar>
-                fields="lecturers"
+            <Table<Student, LecturerVar>
+                fields="students"
                 gqlVar={{ cursor: '' }}
                 gqlGetQuery={gql`
-                    query GetLecturerData(
-                        $after: String
-                        $where: QueryLecturersWhereWhereConditions
-                    ) {
-                        lecturers(first: 20, after: $after, where: $where) {
+                    query {
+                        students(first: 10) {
                             edges {
                                 node {
-                                    name
                                     id
-                                    nidn
-                                    academic_job
-                                    doctor_degree
-                                    specialty
-                                    is_ps_competent
-                                    education_certificate_number
+                                    name
+                                    studyprogram {
+                                        name
+                                    }
+                                    graduation {
+                                        job_type
+                                        year
+                                        is_job_related
+                                        has_job
+                                        has_job_at
+                                    }
                                 }
-                                cursor
                             }
                             pageInfo {
                                 endCursor
@@ -53,24 +54,28 @@ export default function index(): JSX.Element {
                     },
                     {
                         name: 'name',
-                        formatted: 'Nama Dosen'
+                        formatted: 'Nama Siswa'
                     },
                     {
-                        name: 'nidn',
-                        formatted: 'NIDN / NIDK'
+                        name: ['studyprogram', 'name'],
+                        formatted: 'Program Studi'
                     },
                     {
-                        name: 'magister_degree',
-                        formatted: 'S2'
+                        name: ['graduation', 'year'],
+                        formatted: 'Tahun Kelulusan'
                     },
                     {
-                        name: 'doctor_degree',
-                        formatted: 'S3'
+                        name: ['graduation', 'job_type'],
+                        formatted: 'Tipe Pekerjaan'
                     },
-
                     {
-                        name: 'specialty',
-                        formatted: 'Keahlian Khusus'
+                        name: ['graduation', 'is_job_related'],
+                        formatted: 'Pekerjaan Related'
+                    },
+                    {
+                        name: ['graduation', 'job_type'],
+                        formatted: 'Memiliki Pekerjaan Pada',
+                        formatter: (e) => moment(e as string).format('Do MM YYYY')
                     }
                 ]}
             />

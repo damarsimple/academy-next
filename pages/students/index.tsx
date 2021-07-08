@@ -50,7 +50,7 @@ export default function index(): JSX.Element {
                     },
                     {
                         name: 'name',
-                        formatted: 'Nama Dosen'
+                        formatted: 'Nama Siswa'
                     },
                     {
                         name: 'nim',
@@ -58,20 +58,20 @@ export default function index(): JSX.Element {
                     },
                     {
                         name: 'is_active',
-                        formatted: 'S2'
+                        formatted: 'Aktif'
                     },
                     {
                         name: 'is_foreign',
-                        formatted: 'S3'
+                        formatted: 'Asing'
                     },
 
                     {
                         name: 'is_fulltime',
-                        formatted: 'Keahlian Khusus'
+                        formatted: 'Fulltime'
                     },
                     {
                         name: 'graduated_at',
-                        formatted: 'Keahlian Khusus'
+                        formatted: 'Lulus pada '
                     }
                 ]}
             />

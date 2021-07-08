@@ -2,14 +2,14 @@ import { gql } from '@apollo/client';
 import React from 'react';
 import AppContainer from '../../components/AppContainer';
 import Table from '../../components/Table';
-import { GQLVar, Lecturer } from '../../types/type';
+import { GQLVar, Student } from '../../types/type';
 
 type LecturerVar = GQLVar;
 
 export default function index(): JSX.Element {
     return (
         <AppContainer>
-            <Table<Lecturer, LecturerVar>
+            <Table<Student, LecturerVar>
                 fields="lecturers"
                 gqlVar={{ cursor: '' }}
                 gqlGetQuery={gql`
@@ -53,21 +53,8 @@ export default function index(): JSX.Element {
                     },
                     {
                         name: 'name',
-                        formatted: 'Nama Dosen'
+                        formatted: 'Nama Siswa'
                     },
-                    {
-                        name: 'nidn',
-                        formatted: 'NIDN / NIDK'
-                    },
-                    {
-                        name: 'magister_degree',
-                        formatted: 'S2'
-                    },
-                    {
-                        name: 'doctor_degree',
-                        formatted: 'S3'
-                    },
-
                     {
                         name: 'specialty',
                         formatted: 'Keahlian Khusus'

@@ -28,7 +28,6 @@ export type Edge<T> = {
     node?: Maybe<T>;
     cursor: string;
 };
-
 /* eslint-disable */
 // *******************************************************
 // *******************************************************
@@ -93,16 +92,18 @@ export interface Research {
 export interface Student {
     name: string;
     id: string;
-    nim: string;
     created_at: string;
     updated_at: string;
-    Studyprogram: Maybe<Studyprogram>;
+    studyprogram: Maybe<Studyprogram>;
+    studentcourses: Maybe<StudentCourse[]>;
+    graduation: Maybe<Graduation>;
+    nim: string;
     specialty: string;
     is_active: boolean;
     is_foreign: boolean;
     is_fulltime: boolean;
     is_graduated: boolean;
-    graduated_at: string;
+    graduated_at: Maybe<string>;
 }
 
 export interface Studyprogram {
@@ -119,35 +120,26 @@ export interface Studyprogram {
     lecturer: Lecturer;
 }
 
-export interface Recognition {
-    name: Maybe<string>;
+export interface StudentCourse {
     id: string;
     created_at: string;
     updated_at: string;
-    lecturer: Lecturer;
-    proof: string;
-    specialty: string;
-    is_international: boolean;
-    is_national: boolean;
-    is_local: boolean;
-    start_at: number;
-    finish_at: number;
+    ipk: Maybe<number>;
+    finish_at: Maybe<string>;
+    student: Student;
+    semester_id: Semester;
+    course: Course;
+    is_finish: boolean;
 }
 
-export interface Cooperation {
-    title: Maybe<string>;
+export interface Semester {
+    name: string;
     id: string;
     created_at: string;
     updated_at: string;
-    type: Maybe<string>;
-    benefit: string;
-    institution_name: string;
-    is_international: boolean;
-    is_national: boolean;
-    is_local: boolean;
-    start_at: number;
-    finish_at: number;
-    proof: string;
+    year: number;
+    studentcourses: StudentCourse[];
+    courses: Course[];
 }
 
 export interface Course {
@@ -170,39 +162,6 @@ export interface Course {
     organizing_unit: string;
 }
 
-export interface Semester {
-    name: string;
-    id: string;
-    created_at: string;
-    updated_at: string;
-    year: number;
-    studentcourses: StudentCourse[];
-    courses: Course[];
-}
-
-export interface StudentCourse {
-    id: string;
-    created_at: string;
-    updated_at: string;
-    ipk: Maybe<number>;
-    finish_at: Maybe<string>;
-    student: Student;
-    semester_id: Semester;
-    course: Course;
-    is_finish: boolean;
-}
-
-export interface CourseResearchIntegration {
-    id: string;
-    created_at: string;
-    updated_at: string;
-    year: number;
-    student: Student;
-    research: Research;
-    course: Course;
-    integration_type: string;
-}
-
 export interface Graduation {
     id: string;
     created_at: string;
@@ -215,6 +174,61 @@ export interface Graduation {
     year: number;
     start_at: number;
     finish_at: number;
+}
+
+export interface Recognition {
+    id: string;
+    created_at: string;
+    updated_at: string;
+    lecturer: Lecturer;
+    proof: string;
+    specialty: string;
+    is_international: boolean;
+    is_national: boolean;
+    is_local: boolean;
+    start_at: number;
+    finish_at: number;
+}
+
+export interface Achievement {
+    id: string;
+    name: string;
+    created_at: string;
+    updated_at: string;
+    is_local: boolean;
+    is_national: boolean;
+    is_international: boolean;
+    is_academic: boolean;
+    description: string;
+    start_at: Maybe<string>;
+    finish_at: Maybe<string>;
+}
+
+export interface Cooperation {
+    title: Maybe<string>;
+    id: string;
+    created_at: string;
+    updated_at: string;
+    type: Maybe<string>;
+    benefit: string;
+    institution_name: string;
+    is_international: boolean;
+    is_national: boolean;
+    is_local: boolean;
+    start_at: number;
+    finish_at: number;
+    proof: string;
+}
+
+export interface CourseResearchIntegration {
+    id: string;
+    created_at: string;
+    updated_at: string;
+    year: number;
+    student: Student;
+    research: Research;
+    course: Course;
+    integration_type: string;
 }
 
 export interface Pkm {
@@ -307,20 +321,6 @@ export interface AchievementEdge {
     node: Maybe<Achievement>;
     /** A unique cursor that can be used for pagination.*/
     cursor: string;
-}
-
-export interface Achievement {
-    id: string;
-    name: string;
-    created_at: string;
-    updated_at: string;
-    is_local: boolean;
-    is_national: boolean;
-    is_international: boolean;
-    is_academic: boolean;
-    description: string;
-    start_at: Maybe<string>;
-    finish_at: Maybe<string>;
 }
 
 /** A paginated list of Article edges. */
@@ -499,6 +499,22 @@ export interface StudyprogramEdge {
     cursor: string;
 }
 
+/** A paginated list of Survey edges. */
+export interface SurveyConnection {
+    /** Pagination information about the list of edges.*/
+    pageInfo: PageInfo;
+    /** A list of Survey edges.*/
+    edges: Maybe<SurveyEdge[]>;
+}
+
+/** An edge that contains a node of type Survey and a cursor. */
+export interface SurveyEdge {
+    /** The Survey node.*/
+    node: Maybe<Survey>;
+    /** A unique cursor that can be used for pagination.*/
+    cursor: string;
+}
+
 /** A paginated list of Lecturer edges. */
 export interface LecturerConnection {
     /** Pagination information about the list of edges.*/
@@ -515,15 +531,20 @@ export interface LecturerEdge {
     cursor: string;
 }
 
-export interface CreateLecturerInput {
-    name: string;
-    nidn?: string;
-    doctor_degree?: string;
-    magister_degree?: string;
-    specialty?: string;
-    academic_job?: string;
-    education_certificate_number?: string;
-    is_ps_competent?: boolean;
+/** A paginated list of StudentSelection edges. */
+export interface StudentSelectionConnection {
+    /** Pagination information about the list of edges.*/
+    pageInfo: PageInfo;
+    /** A list of StudentSelection edges.*/
+    edges: Maybe<StudentSelectionEdge[]>;
+}
+
+/** An edge that contains a node of type StudentSelection and a cursor. */
+export interface StudentSelectionEdge {
+    /** The StudentSelection node.*/
+    node: Maybe<StudentSelection>;
+    /** A unique cursor that can be used for pagination.*/
+    cursor: string;
 }
 
 export interface StudentSelection {
@@ -535,6 +556,17 @@ export interface StudentSelection {
     is_accepted: boolean;
     is_regular: boolean;
     is_transfer: boolean;
+}
+
+export interface CreateLecturerInput {
+    name: string;
+    nidn?: string;
+    doctor_degree?: string;
+    magister_degree?: string;
+    specialty?: string;
+    academic_job?: string;
+    education_certificate_number?: string;
+    is_ps_competent?: boolean;
 }
 
 export interface StudentResearchActivity {
@@ -607,7 +639,7 @@ export interface WhereConditions {
     /** @default EQThe operator that is used for the condition.*/
     operator?: SQLOperator;
     /** The value that is used for the condition.*/
-    value?: undefined;
+    value?: any;
     /** A set of conditions that requires all conditions to match.*/
     AND?: WhereConditions[];
     /** A set of conditions that requires at least one condition to match.*/
@@ -633,6 +665,10 @@ export interface userArgs {
 }
 
 export interface lecturerArgs {
+    id?: string;
+}
+
+export interface achievementArgs {
     id?: string;
 }
 
@@ -686,4 +722,11 @@ export interface studyprogramArgs {
 
 export interface surveyArgs {
     id?: string;
+}
+
+export interface usersArgs {
+    /** Limits number of fetched elements.*/
+    first: number;
+    /** A cursor after which elements are returned.*/
+    after?: string;
 }
