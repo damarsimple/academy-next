@@ -8,6 +8,7 @@ import { FaUsers, FaVoteYea } from 'react-icons/fa';
 import { GiShakingHands } from 'react-icons/gi';
 import { RiArticleLine, RiStarSFill, RiSurveyLine } from 'react-icons/ri';
 import { Disclosure } from '@headlessui/react';
+import { BiPlanet } from 'react-icons/bi';
 type Children = JSX.Element | JSX.Element[];
 
 interface ContainerProp {
@@ -203,22 +204,22 @@ const AppMenu: Menu[] = [
     //         }
     //     ]
     // },
-    // {
-    //     name: 'Mahasiswa Asing',
-    //     icon: <BiPlanet size="1.5em" />,
-    //     menus: [
-    //         {
-    //             name: 'Data',
-    //             url: '/foreigns',
-    //             icon: <BiPlanet size="1.5em" />
-    //         },
-    //         {
-    //             name: 'Buat',
-    //             url: '/foreigns/create',
-    //             icon: <AiOutlinePlus size="1.5em" />
-    //         }
-    //     ]
-    // },
+    {
+        name: 'Mahasiswa Asing',
+        icon: <BiPlanet size="1.5em" />,
+        menus: [
+            {
+                name: 'Data',
+                url: '/foreigns',
+                icon: <BiPlanet size="1.5em" />
+            },
+            {
+                name: 'Buat',
+                url: '/foreigns/create',
+                icon: <AiOutlinePlus size="1.5em" />
+            }
+        ]
+    },
     {
         name: 'Prestasi Akademik Mahasiswa',
         icon: <RiStarSFill size="1.5em" />,
